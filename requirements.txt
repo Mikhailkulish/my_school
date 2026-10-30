@@ -1,0 +1,6 @@
+Django==6.1.2
+djangorestframework==3.18.3
+psycopg2-binary==2.9.13
+python-dotenv==1.2.4
+pillow==13.0.0
+black==26.10.1
