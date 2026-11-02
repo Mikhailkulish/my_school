@@ -20,7 +20,7 @@ urlpatterns = [
     path("lessons/", LessonListApiView.as_view(), name="lessons_list"),
     path("lessons/<int:pk>/", LessonRetrieveApiView.as_view(), name="lessons_retrieve"),
     path(
-        "lessons/create/<int:pk>/", LessonCreateApiView.as_view(), name="lessons_create"
+        "lessons/create/", LessonCreateApiView.as_view(), name="lessons_create"
     ),
     path(
         "lessons/<int:pk>/delete/",
