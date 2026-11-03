@@ -1,10 +1,40 @@
 from rest_framework.serializers import ModelSerializer
 
-from users.models import User
+from users.models import User, Payment
+from materials.serializers import CourseSerializer, LessonSerializer
+
+
+class PaymentSerializer(ModelSerializer):
+    course_data = CourseSerializer(source="course", read_only=True)
+    lesson_data = LessonSerializer(source="lesson", read_only=True)
+
+    class Meta:
+        model = Payment
+        fields = (
+            "id",
+            "user",
+            "payment_date",
+            "course",
+            "lesson",
+            "amount",
+            "payment_method",
+            "course_data",
+            "lesson_data",
+        )
 
 
 class UserProfileSerializer(ModelSerializer):
+    payments = PaymentSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ("email", "first_name", "last_name", "phone", "city", "avatar")
+        fields = (
+            "email",
+            "first_name",
+            "last_name",
+            "phone",
+            "city",
+            "avatar",
+            "payments",
+        )
         read_only_fields = ("email",)
