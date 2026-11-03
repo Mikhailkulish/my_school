@@ -27,3 +27,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
     ordering_fields = ['payment_date']
 
     ordering = ['-payment_date']
+
+    def get_queryset(self):
+        return Payment.objects.filter(user=self.request.user)
