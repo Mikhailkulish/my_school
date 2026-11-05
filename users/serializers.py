@@ -38,3 +38,9 @@ class UserProfileSerializer(ModelSerializer):
             "payments",
         )
         read_only_fields = ("email",)
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
