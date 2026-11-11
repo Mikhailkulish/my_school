@@ -23,12 +23,19 @@ class PaymentSerializer(ModelSerializer):
         )
 
 
+class UserProfilePublicSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "email", "first_name", "phone", "city", "avatar")
+
+
 class UserProfileSerializer(ModelSerializer):
     payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
         fields = (
+            "id",
             "email",
             "first_name",
             "last_name",
@@ -38,3 +45,19 @@ class UserProfileSerializer(ModelSerializer):
             "payments",
         )
         read_only_fields = ("email",)
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+            "phone",
+            "city",
+            "avatar"
+        )
+        extra_kwargs = {"password": {"write_only": True}}
