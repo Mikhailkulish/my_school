@@ -139,3 +139,38 @@ class SubscriptionTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(response.data["is_subscribed"])
+
+
+class CourseTestCase(APITestCase):
+    def setUp(self):
+        self.moders_group = Group.objects.create(name="moders")
+
+        self.owner = create_test_user("course_owner@example.com")
+        self.moderator = create_test_user("course_moderator@example.com")
+        self.moderator.groups.add(self.moders_group)
+        self.stranger = create_test_user("course_stranger@example.com")
+
+        self.course = Course.objects.create(
+            title="Test Course", description="Desc", owner=self.owner
+        )
+
+    def test_stranger_cannot_update_course(self):
+        self.client.force_authenticate(user=self.stranger)
+        response = self.client.patch(
+            reverse("materials:course-detail", args=[self.course.id]),
+            {"title": "Чужое изменение"},
+        )
+        self.assertIn(
+            response.status_code,
+            (status.HTTP_403_FORBIDDEN, status.HTTP_404_NOT_FOUND),
+        )
+
+    def test_anonymous_cannot_update_course(self):
+        response = self.client.patch(
+            reverse("materials:course-detail", args=[self.course.id]),
+            {"title": "Без авторизации"},
+        )
+        self.assertIn(
+            response.status_code,
+            (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN),
+        )
