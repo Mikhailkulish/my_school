@@ -77,6 +77,18 @@ class Payment(models.Model):
         verbose_name="Сумма оплаты",
         help_text="Укажите сумму оплаты"
     )
+    payment_url = models.URLField(
+        max_length=600,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на оплату"
+    )
+    stripe_session_id = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name="ID сессии Stripe"
+    )
 
     CASH = "cash"
     TRANSFER = "transfer"

@@ -4,7 +4,7 @@ from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from users.apps import UsersConfig
-from users.views import UserProfileAPIView, PaymentViewSet, UserCreateAPIView
+from users.views import UserProfileAPIView, PaymentViewSet, UserCreateAPIView, CreatePaymentView
 
 app_name = UsersConfig.name
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path("profile/<int:pk>/", UserProfileAPIView.as_view(), name="profile-detail"),
     path("login/", TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name="login"),
     path("token/refresh/", TokenRefreshView.as_view(permission_classes=(AllowAny,)), name="token_refresh"),
+    path("payments/pay/", CreatePaymentView.as_view(), name="payment-create"),
 ]
 
 urlpatterns += router.urls
