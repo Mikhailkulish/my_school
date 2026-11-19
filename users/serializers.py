@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from users.models import User, Payment
 from materials.serializers import CourseSerializer, LessonSerializer
@@ -61,3 +62,10 @@ class UserSerializer(ModelSerializer):
             "avatar"
         )
         extra_kwargs = {"password": {"write_only": True}}
+
+
+class PaymentStatusResponseSerializer(serializers.Serializer):
+    payment_id = serializers.IntegerField()
+    status = serializers.ChoiceField(choices=["pending", "paid", "canceled"])
+    stripe_payment_status = serializers.CharField()
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)

@@ -44,6 +44,9 @@ class CourseViewSet(ModelViewSet):
         return [IsAuthenticated()]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Course.objects.none()
+
         queryset = Course.objects.all()
         if not self.request.user.groups.filter(name="moders").exists():
             queryset = queryset.filter(owner=self.request.user)
@@ -69,6 +72,9 @@ class LessonListApiView(ListAPIView):
     pagination_class = MaterialPaginator
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Lesson.objects.none()
+
         queryset = Lesson.objects.all()
         if not self.request.user.groups.filter(name="moders").exists():
             queryset = queryset.filter(owner=self.request.user)
@@ -81,6 +87,9 @@ class LessonRetrieveApiView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsModeratorOrOwner]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Lesson.objects.none()
+
         queryset = Lesson.objects.all()
         if not self.request.user.groups.filter(name="moders").exists():
             queryset = queryset.filter(owner=self.request.user)
@@ -93,6 +102,9 @@ class LessonUpdateApiView(UpdateAPIView):
     permission_classes = [IsAuthenticated, IsModeratorOrOwner]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Lesson.objects.none()
+
         queryset = Lesson.objects.all()
         if not self.request.user.groups.filter(name="moders").exists():
             queryset = queryset.filter(owner=self.request.user)
@@ -105,6 +117,9 @@ class LessonDestroyApiView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwner]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Lesson.objects.none()
+
         queryset = Lesson.objects.all()
         if not self.request.user.groups.filter(name="moders").exists():
             queryset = queryset.filter(owner=self.request.user)

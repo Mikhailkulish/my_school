@@ -77,6 +77,18 @@ class Payment(models.Model):
         verbose_name="Сумма оплаты",
         help_text="Укажите сумму оплаты"
     )
+    payment_url = models.URLField(
+        max_length=600,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на оплату"
+    )
+    stripe_session_id = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name="ID сессии Stripe"
+    )
 
     CASH = "cash"
     TRANSFER = "transfer"
@@ -91,6 +103,24 @@ class Payment(models.Model):
         choices=PAYMENT_METHOD_CHOICES,
         default=CASH,
         verbose_name="Способ оплаты"
+    )
+
+    PENDING = "pending"
+    PAID = "paid"
+    CANCELED = "canceled"
+
+    STATUS_CHOICES = [
+        (PENDING, "Ожидает оплаты"),
+        (PAID, "Оплачен"),
+        (CANCELED, "Отменён"),
+    ]
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default=PENDING,
+        verbose_name="Статус платежа",
+        help_text="Текущий статус платежа",
     )
 
     class Meta:
