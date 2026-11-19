@@ -105,6 +105,24 @@ class Payment(models.Model):
         verbose_name="Способ оплаты"
     )
 
+    PENDING = "pending"
+    PAID = "paid"
+    CANCELED = "canceled"
+
+    STATUS_CHOICES = [
+        (PENDING, "Ожидает оплаты"),
+        (PAID, "Оплачен"),
+        (CANCELED, "Отменён"),
+    ]
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default=PENDING,
+        verbose_name="Статус платежа",
+        help_text="Текущий статус платежа",
+    )
+
     class Meta:
         verbose_name = "Платеж"
         verbose_name_plural = "Платежи"

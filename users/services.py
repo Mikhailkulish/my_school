@@ -61,3 +61,11 @@ def create_stripe_checkout_session(
         "session_id": session.id,
         "payment_url": session.url,
     }
+
+
+def retrieve_stripe_session(session_id: str) -> stripe.checkout.Session:
+    """
+    Запрашивает у Stripe информацию о сессии по её ID.
+    Возвращает объект Session.
+    """
+    return stripe.checkout.Session.retrieve(session_id)
