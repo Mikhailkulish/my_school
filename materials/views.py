@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import MaterialPaginator
+from materials.tasks import send_course_update_email
 from materials.serializers import (
     CourseSerializer,
     LessonSerializer,
@@ -54,6 +55,13 @@ class CourseViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        # 1. Сохраняем обновлённый курс
+        instance = serializer.save()
+
+        # 2. Вызываем асинхронную задачу отправки писем подписчикам
+        send_course_update_email.delay(instance.id, instance.title)
 
 
 class LessonCreateApiView(CreateAPIView):
